@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class TreeSpawner : MonoBehaviour
 {
+    public List<GameObject> trees;
+
     // Start is called before the first frame update
     void Start()
     {
