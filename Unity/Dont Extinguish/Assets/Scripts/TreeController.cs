@@ -20,11 +20,12 @@ public class TreeController : MonoBehaviour
     public GameObject logSample;
     public Transform treeSpawner;
     public Transform logSpawner;
-    public bool planted = false;
+    public bool planted = true;
 
     private GameObject healthText;
     private float tempZeroToCalculateBurning = 0f;
     private float tempZeroToCalculateHealth = 0f;
+    private Rigidbody rigidBody;
 
 
     // Start is called before the first frame update
@@ -35,6 +36,9 @@ public class TreeController : MonoBehaviour
         XRGrabInteractable grabbable = GetComponent<XRGrabInteractable>();
         grabbable.firstSelectEntered.AddListener(holding);
         grabbable.lastSelectExited.AddListener(released);
+        rigidBody= GetComponent<Rigidbody>();
+        smallTreeSample = transform.GetChild(0).gameObject;
+        logSample = transform.GetChild(1).gameObject;
     }
 
     // Update is called once per frame
@@ -44,12 +48,15 @@ public class TreeController : MonoBehaviour
         {
             transform.rotation = Quaternion.Euler(0f, transform.rotation.y, 0f);
             GetComponent<Rigidbody>().velocity = Vector3.zero;
-            GetComponent<Rigidbody>().isKinematic = true;
+            //GetComponent<Rigidbody>().isKinematic = true;
+            rigidBody.constraints = RigidbodyConstraints.FreezeAll;
+
             transform.position = new Vector3(transform.position.x, 0f, transform.position.z);
         }
         else
         {
-            GetComponent<Rigidbody>().isKinematic = false;
+            //GetComponent<Rigidbody>().isKinematic = false;
+            rigidBody.constraints = RigidbodyConstraints.None;
         }
         transform.rotation = Quaternion.Euler(0f, transform.rotation.y, 0f);
         healthText = this.gameObject.transform.GetChild(3).GetChild(0).gameObject;
@@ -161,7 +168,8 @@ public class TreeController : MonoBehaviour
     public void released(SelectExitEventArgs args) // plater released this tree
     {
         GetComponent<Rigidbody>().velocity = Vector3.zero;
-        GetComponent<Rigidbody>().isKinematic = true;
+        //GetComponent<Rigidbody>().isKinematic = true;
+        rigidBody.constraints = RigidbodyConstraints.FreezeAll;
         planted = true;
         Debug.Log("released");
     }
