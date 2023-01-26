@@ -37,8 +37,8 @@ public class TreeController : MonoBehaviour
         grabbable.firstSelectEntered.AddListener(holding);
         grabbable.lastSelectExited.AddListener(released);
         rigidBody= GetComponent<Rigidbody>();
-        smallTreeSample = transform.GetChild(0).gameObject;
-        logSample = transform.GetChild(1).gameObject;
+        smallTreeSample = smallTreeSample.transform.GetChild(0).gameObject;
+        logSample = logSample.transform.GetChild(1).gameObject;
     }
 
     // Update is called once per frame
@@ -125,14 +125,18 @@ public class TreeController : MonoBehaviour
     {
         if (stage==2) // tree was fully grown
         {
-            GameObject instantiated = Instantiate(smallTreeSample, this.gameObject.transform.position, smallTreeSample.transform.rotation, treeSpawner);
+            GameObject instantiated = Instantiate(smallTreeSample.gameObject, this.gameObject.transform.position, smallTreeSample.transform.rotation, treeSpawner);
             // Instantiate(logSample, this.gameObject.transform.position - new Vector3(0f, 1f, 0f), logSample.transform.rotation, logSpawner);
             // Instantiate(logSample, this.gameObject.transform.position - new Vector3(0f, 1f, 0f), logSample.transform.rotation, logSpawner);
             // Instantiate(logSample, this.gameObject.transform.position - new Vector3(0f, 1f, 0f), logSample.transform.rotation, logSpawner);
+            Debug.Log("Instantiated name: " + instantiated.name);
+            Debug.Log("smallTreeSample name: " + smallTreeSample.name);
         }
         else if (stage==1) // tree was growing
         {
-            GameObject instantiated = Instantiate(smallTreeSample, this.gameObject.transform.position - new Vector3(0f, 1f, 0f), smallTreeSample.transform.rotation, treeSpawner);
+            GameObject instantiated = Instantiate(smallTreeSample.gameObject, this.gameObject.transform.position, smallTreeSample.transform.rotation, treeSpawner);
+            Debug.Log("Instantiated name: " + instantiated.name);
+            Debug.Log("smallTreeSample name: " + smallTreeSample.name);
             instantiated.GetComponent<TreeController>().health = health;
         }
         else if (stage==0) // tree was burning
