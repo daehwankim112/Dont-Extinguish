@@ -16,11 +16,13 @@ public class TreeController : MonoBehaviour
     public bool burning = false;
     public float burningSpeed = 0.2f;
     public int damage = 20;
+    public GameObject sampleContainer;
     public GameObject smallTreeSample;
     public GameObject logSample;
     public Transform treeSpawner;
     public Transform logSpawner;
     public bool planted = true;
+    public bool initialRigidState;
 
     private GameObject healthText;
     private float tempZeroToCalculateBurning = 0f;
@@ -31,14 +33,23 @@ public class TreeController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        UnityEngine.XR.XRSettings.gameViewRenderMode = UnityEngine.XR.GameViewRenderMode.RightEye;
         GetComponent<Rigidbody>().velocity= Vector3.zero;
         gameObject.tag = "Tree";
         XRGrabInteractable grabbable = GetComponent<XRGrabInteractable>();
         grabbable.firstSelectEntered.AddListener(holding);
         grabbable.lastSelectExited.AddListener(released);
         rigidBody= GetComponent<Rigidbody>();
-        smallTreeSample = smallTreeSample.transform.GetChild(0).gameObject;
-        logSample = logSample.transform.GetChild(1).gameObject;
+        smallTreeSample = sampleContainer.transform.GetChild(0).gameObject;
+        logSample = logSample.transform.gameObject;
+        if ( initialRigidState )
+        {
+            planted = true;
+        }
+        else
+        {
+            planted = false;
+        }
     }
 
     // Update is called once per frame
@@ -48,17 +59,15 @@ public class TreeController : MonoBehaviour
         {
             transform.rotation = Quaternion.Euler(0f, transform.rotation.y, 0f);
             GetComponent<Rigidbody>().velocity = Vector3.zero;
-            //GetComponent<Rigidbody>().isKinematic = true;
             rigidBody.constraints = RigidbodyConstraints.FreezeAll;
-
             transform.position = new Vector3(transform.position.x, 0f, transform.position.z);
+            rigidBody.useGravity = false;
         }
         else
         {
-            //GetComponent<Rigidbody>().isKinematic = false;
             rigidBody.constraints = RigidbodyConstraints.None;
+            rigidBody.useGravity = true;
         }
-        transform.rotation = Quaternion.Euler(0f, transform.rotation.y, 0f);
         healthText = this.gameObject.transform.GetChild(3).GetChild(0).gameObject;
         if ( health > 0 )
         {
@@ -95,8 +104,6 @@ public class TreeController : MonoBehaviour
         }
         else // health = 0. destroy tree
         {
-            this.gameObject.SetActive(false);
-            Destroy(this.gameObject, 1f);
             if (growing && !burning) // tree is down but was still growing
             {
                 drop(1);
@@ -109,6 +116,8 @@ public class TreeController : MonoBehaviour
             {
                 drop(0);
             }
+            this.gameObject.SetActive(false);
+            Destroy(this.gameObject, 1f);
         }
     }
 
@@ -125,19 +134,24 @@ public class TreeController : MonoBehaviour
     {
         if (stage==2) // tree was fully grown
         {
-            GameObject instantiated = Instantiate(smallTreeSample.gameObject, this.gameObject.transform.position, smallTreeSample.transform.rotation, treeSpawner);
-            // Instantiate(logSample, this.gameObject.transform.position - new Vector3(0f, 1f, 0f), logSample.transform.rotation, logSpawner);
-            // Instantiate(logSample, this.gameObject.transform.position - new Vector3(0f, 1f, 0f), logSample.transform.rotation, logSpawner);
-            // Instantiate(logSample, this.gameObject.transform.position - new Vector3(0f, 1f, 0f), logSample.transform.rotation, logSpawner);
-            Debug.Log("Instantiated name: " + instantiated.name);
-            Debug.Log("smallTreeSample name: " + smallTreeSample.name);
+            GameObject instantiatedSmallTree = Instantiate(smallTreeSample.gameObject, this.gameObject.transform.position, smallTreeSample.transform.rotation, treeSpawner);
+            GameObject instantiatedLog = Instantiate(logSample.gameObject, this.gameObject.transform.position + new Vector3(0f, 1f, 0f), logSample.transform.rotation, logSpawner);
+            instantiatedSmallTree.transform.rotation = Quaternion.Euler(Random.Range(-10f, 10f), 0f, Random.Range(-10f, 10f));
+            //Debug.Log("Tree was fully gorwn");
+            //Debug.Log("Instantiated name: " + instantiatedSmallTree.name);
+            //Debug.Log("smallTreeSample name: " + smallTreeSample.name);
+            //Debug.Log("Instantiated name: " + instantiatedLog.name);
+            //Debug.Log("logSample name: " + logSample.name);
         }
         else if (stage==1) // tree was growing
         {
             GameObject instantiated = Instantiate(smallTreeSample.gameObject, this.gameObject.transform.position, smallTreeSample.transform.rotation, treeSpawner);
-            Debug.Log("Instantiated name: " + instantiated.name);
-            Debug.Log("smallTreeSample name: " + smallTreeSample.name);
-            instantiated.GetComponent<TreeController>().health = health;
+            instantiated.transform.rotation = Quaternion.Euler(Random.Range(-10f, 10f), 0f, Random.Range(-10f, 10f));
+            //Debug.Log("Tree was growing");
+            //Debug.Log("Instantiated name: " + instantiated.name);
+            //Debug.Log("smallTreeSample name: " + smallTreeSample.name);
+            // instantiated.GetComponent<TreeController>().health = 10;
+            //Debug.Log("Instantiated has TreeController component: " + (instantiated.GetComponent<TreeController>() != null));
         }
         else if (stage==0) // tree was burning
         {
@@ -172,7 +186,6 @@ public class TreeController : MonoBehaviour
     public void released(SelectExitEventArgs args) // plater released this tree
     {
         GetComponent<Rigidbody>().velocity = Vector3.zero;
-        //GetComponent<Rigidbody>().isKinematic = true;
         rigidBody.constraints = RigidbodyConstraints.FreezeAll;
         planted = true;
         Debug.Log("released");
