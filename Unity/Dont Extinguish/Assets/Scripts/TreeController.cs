@@ -62,6 +62,7 @@ public class TreeController : MonoBehaviour
             rigidBody.constraints = RigidbodyConstraints.FreezeAll;
             transform.position = new Vector3(transform.position.x, 0f, transform.position.z);
             rigidBody.useGravity = false;
+            GetComponent<XRGrabInteractable>().enabled = false;
         }
         else
         {
@@ -135,8 +136,11 @@ public class TreeController : MonoBehaviour
         if (stage==2) // tree was fully grown
         {
             GameObject instantiatedSmallTree = Instantiate(smallTreeSample.gameObject, this.gameObject.transform.position, smallTreeSample.transform.rotation, treeSpawner);
-            GameObject instantiatedLog = Instantiate(logSample.gameObject, this.gameObject.transform.position + new Vector3(0f, 1f, 0f), logSample.transform.rotation, logSpawner);
+            GameObject instantiatedLog1 = Instantiate(logSample.gameObject, this.gameObject.transform.position + new Vector3(0f, 2f, 0f), logSample.transform.rotation, logSpawner);
+            GameObject instantiatedLog2 = Instantiate(logSample.gameObject, this.gameObject.transform.position + new Vector3(0f, 3f, 0f), logSample.transform.rotation, logSpawner);
+            GameObject instantiatedLog3 = Instantiate(logSample.gameObject, this.gameObject.transform.position + new Vector3(0f, 4f, 0f), logSample.transform.rotation, logSpawner);
             instantiatedSmallTree.transform.rotation = Quaternion.Euler(Random.Range(-10f, 10f), 0f, Random.Range(-10f, 10f));
+            instantiatedSmallTree.GetComponent<Rigidbody>().useGravity= true;
             //Debug.Log("Tree was fully gorwn");
             //Debug.Log("Instantiated name: " + instantiatedSmallTree.name);
             //Debug.Log("smallTreeSample name: " + smallTreeSample.name);
@@ -145,8 +149,9 @@ public class TreeController : MonoBehaviour
         }
         else if (stage==1) // tree was growing
         {
-            GameObject instantiated = Instantiate(smallTreeSample.gameObject, this.gameObject.transform.position, smallTreeSample.transform.rotation, treeSpawner);
-            instantiated.transform.rotation = Quaternion.Euler(Random.Range(-10f, 10f), 0f, Random.Range(-10f, 10f));
+            GameObject instantiatedSmallTree = Instantiate(smallTreeSample.gameObject, this.gameObject.transform.position, smallTreeSample.transform.rotation, treeSpawner);
+            instantiatedSmallTree.transform.rotation = Quaternion.Euler(Random.Range(-10f, 10f), 0f, Random.Range(-10f, 10f));
+            instantiatedSmallTree.GetComponent<Rigidbody>().useGravity = true;
             //Debug.Log("Tree was growing");
             //Debug.Log("Instantiated name: " + instantiated.name);
             //Debug.Log("smallTreeSample name: " + smallTreeSample.name);
