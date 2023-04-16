@@ -28,7 +28,8 @@ public class TreeController : MonoBehaviour
     private float tempZeroToCalculateBurning = 0f;
     private float tempZeroToCalculateHealth = 0f;
     private Rigidbody rigidBody;
-
+    private bool initBurningToggle = true;
+    private GameObject fireOnThisTree;
 
     // Start is called before the first frame update
     void Start()
@@ -92,10 +93,12 @@ public class TreeController : MonoBehaviour
                     health += 1;
                 }
             }
-            if (burning && planted) // tree is burning and planted regardless tree is growing or not
+            if (burning) // tree is burning and planted regardless tree is growing or not
             {
                 Debug.Log("Tree " + this.gameObject.name + " is burning");
+                growing = false;
                 isburning();
+                gameObject.transform.localScale = new Vector3(health / 100f, health / 100f, health / 100f);
             }
             if (health==100 && planted) // tree is fully grown
             {
@@ -172,6 +175,12 @@ public class TreeController : MonoBehaviour
             tempZeroToCalculateBurning = 0f;
             health -= 1;
         }
+        if ( initBurningToggle )
+        {
+            initBurningToggle = false;
+            fireOnThisTree =  Instantiate(GameObject.Find("Fire"), Pose.identity.position, Pose.identity.rotation, this.gameObject.transform);
+        }
+        fireOnThisTree.transform.localScale = this.transform.localScale;
     }
 
     private void OnCollisionEnter(Collision collision) // detects if Blade of Axe is hitting this tree

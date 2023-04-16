@@ -19,7 +19,24 @@ public class XRGrabInteractableTwoAttach : XRGrabInteractable
             attachTransform = rightAttachTransform;
         }
 
-
+        SetParentToXRRig();
         base.OnSelectEntered(args);
     }
+
+    protected override void OnSelectExited(XRBaseInteractor args)
+    {
+        SetParentToWorld();
+        base.OnSelectExited(args);
+    }
+
+    public void SetParentToXRRig()
+    {
+        transform.SetParent(interactorsSelecting[0].transform);
+    }
+
+    public void SetParentToWorld()
+    {
+
+    }
+
 }

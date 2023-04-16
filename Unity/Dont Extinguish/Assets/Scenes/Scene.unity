@@ -4313,7 +4313,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 939598367}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0ad34abafad169848a38072baa96cdb2, type: 3}
+  m_Script: {fileID: 11500000, guid: 3655661fe9de55348a66b07e633296f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_InteractionManager: {fileID: 1944224666}
@@ -8634,6 +8634,8 @@ MonoBehaviour:
   log: 100
   speed: 0.01
   fire: {fileID: 1420736793}
+  treeSpawner: {fileID: 0}
+  burningRadius: 0
 --- !u!1 &1777835602
 GameObject:
   m_ObjectHideFlags: 0

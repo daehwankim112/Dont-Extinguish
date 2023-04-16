@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using System;
+using JetBrains.Annotations;
+using Unity.VisualScripting;
 
 public class FireManager : MonoBehaviour
 {
@@ -10,6 +12,8 @@ public class FireManager : MonoBehaviour
     public int log= 100;
     public float speed = 0.01f;
     public Transform fire;
+    public GameObject treeSpawner;
+    public float burningRadius;
 
     // Start is called before the first frame update
     void Start()
@@ -32,6 +36,13 @@ public class FireManager : MonoBehaviour
         if ( log < 1 )
         {
             GameController.isPlaying = false;
+        }
+        foreach(Transform child in treeSpawner.transform)
+        {
+            if (Vector3.Distance(this.transform.position, child.transform.position) < burningRadius)
+            {
+                child.gameObject.GetComponent<TreeController>().burning = true;
+            }
         }
     }
     /*
