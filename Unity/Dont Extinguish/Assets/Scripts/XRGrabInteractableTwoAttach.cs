@@ -23,6 +23,7 @@ public class XRGrabInteractableTwoAttach : XRGrabInteractable
         base.OnSelectEntered(args);
     }
 
+    [System.Obsolete]
     protected override void OnSelectExited(XRBaseInteractor args)
     {
         SetParentToWorld();

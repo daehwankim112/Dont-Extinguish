@@ -36,9 +36,15 @@ public class GameController : MonoBehaviour
         }
     }
 
-    public void GameStart()
+    public void Reset()
     {
         reset = true;
+    }
+
+    public void GameStart()
+    {
+        reset = false;
         isPlaying= true;
+        Debug.Log("Game started");
     }
 }

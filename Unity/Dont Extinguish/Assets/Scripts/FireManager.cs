@@ -8,9 +8,9 @@ using Unity.VisualScripting;
 
 public class FireManager : MonoBehaviour
 {
-    public TMP_Text logText;
-    public int log= 100;
-    public float speed = 0.01f;
+    public GameObject logText;
+    public float log = 100;
+    public float speed;
     public Transform fire;
     public GameObject treeSpawner;
     public float burningRadius;
@@ -18,7 +18,7 @@ public class FireManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        speed = 2;
     }
 
     // Update is called once per frame
@@ -26,7 +26,8 @@ public class FireManager : MonoBehaviour
     {
         if ( GameController.isPlaying )
         {
-            log -= (int)(Time.deltaTime * speed);
+            log -= (Time.deltaTime * speed);
+            Debug.Log("log: " + log);
             fire.localScale = new Vector3(log/100, log/100, log/100);
         }
         if ( GameController.reset )
@@ -44,6 +45,7 @@ public class FireManager : MonoBehaviour
                 child.gameObject.GetComponent<TreeController>().burning = true;
             }
         }
+        logText.GetComponent<TMP_Text>().text = "log: " + (int) log + "";
     }
     /*
     private bool LogDropped()

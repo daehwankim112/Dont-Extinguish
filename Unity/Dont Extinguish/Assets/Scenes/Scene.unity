@@ -8429,7 +8429,7 @@ GameObject:
   - component: {fileID: 1727896822}
   - component: {fileID: 1727896821}
   m_Layer: 0
-  m_Name: Text (TMP)
+  m_Name: fire health
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8490,8 +8490,8 @@ MonoBehaviour:
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
-  m_HorizontalAlignment: 1
-  m_VerticalAlignment: 256
+  m_HorizontalAlignment: 2
+  m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
   m_wordSpacing: 0
@@ -8630,11 +8630,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4961a72b1200a9245ac3564336003622, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  logText: {fileID: 1727896821}
+  logText: {fileID: 1727896820}
   log: 100
   speed: 0.01
   fire: {fileID: 1420736793}
-  treeSpawner: {fileID: 0}
+  treeSpawner: {fileID: 2058723608}
   burningRadius: 0
 --- !u!1 &1777835602
 GameObject:
